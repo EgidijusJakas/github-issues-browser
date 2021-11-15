@@ -1,3 +1,7 @@
+.root {
+    margin-top: 12px;
+}
+
 .pagination {
     justify-content: center;
 }

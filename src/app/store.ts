@@ -1,11 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import searchControlsReducer from '../SearchControls/searchControlsSlice';
-import issuesListReducer from '../issuesList';
+import paginationReducer from '../Pagination/paginationSlice';
+import issuesListReducer from '../IssuesList/issuesListSlice';
+import issuesListHeader from '../IssuesListHeader/issuesListHeaderSlice';
 
 export const store = configureStore({
   reducer: {
     searchControls: searchControlsReducer,
     issuesList: issuesListReducer,
+    pageNumber: paginationReducer,
+    sortBy: issuesListHeader,
   },
 });
 
