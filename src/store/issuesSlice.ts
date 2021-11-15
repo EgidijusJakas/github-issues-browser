@@ -43,8 +43,8 @@ const initialState: IIssuesState = {
 
 export const loadAndSetIssues = createAsyncThunk(
   'issues/loadAndSet',
-  async (_params, { getState }) => {
-    const { filters } = getState() as RootState
+  async (_, { getState }) => {
+    const { filters } = getState() as RootState;
     const response = await fetchGithubIssues(filters);
     return response.json();
   }

@@ -14,12 +14,12 @@ const SearchControls = () => {
   const organizationName = useAppSelector(selectFiltersOrganizationName);
   const repositoryName = useAppSelector(selectFiltersRepositoryName);
 
-  const onOrganizationNameChange = (event: any) => {
-    dispatch(setFiltersOrganizationName(event.target.value));
+  const onOrganizationNameChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFiltersOrganizationName(value));
   };
 
-  const onRepositoryNameChange = (event: any) => {
-    dispatch(setFiltersRepositoryName(event.target.value));
+  const onRepositoryNameChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFiltersRepositoryName(value));
   };
 
   const onSubmit = () => {

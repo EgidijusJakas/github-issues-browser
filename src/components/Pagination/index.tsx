@@ -13,7 +13,7 @@ const Pagination = ({ pageCount }: IPagination) => {
 
   const pageNumber = useAppSelector(selectFiltersPageNumber);
 
-  const onPaginationChange = (_e: any, value: number) => {
+  const onPaginationChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     dispatch(setFiltersPageNumber(value));
     dispatch(loadAndSetIssues());
   }
