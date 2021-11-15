@@ -1,7 +1,7 @@
 import { Pagination as PaginationMUI } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { queryGithubIssues } from '../IssuesList/issuesListSlice';
-import { selectPageNumber, setPageNumber } from './paginationSlice';
+import { selectFiltersPageNumber, setFiltersPageNumber } from '../../store/filtersSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadAndSetIssues } from '../../store/issuesSlice';
 import classes from './Pagination.module.css';
 
 interface IPagination {
@@ -11,11 +11,11 @@ interface IPagination {
 const Pagination = ({ pageCount }: IPagination) => {
   const dispatch = useAppDispatch();
 
-  const pageNumber = useAppSelector(selectPageNumber);
+  const pageNumber = useAppSelector(selectFiltersPageNumber);
 
   const onPaginationChange = (_e: any, value: number) => {
-    dispatch(setPageNumber(value))
-    dispatch(queryGithubIssues())
+    dispatch(setFiltersPageNumber(value));
+    dispatch(loadAndSetIssues());
   }
 
   return (
