@@ -1,6 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
+import { Status } from '../constants';
 import { fetchGithubIssues } from '../data/issues';
+
+interface IIssueRepo {
+  id: string;
+  title: string;
+  created_at: string;
+  user: { login: string; };
+  number: number;
+  html_url: string;
+}
 
 interface IIssue {
   id: number;
@@ -9,20 +19,6 @@ interface IIssue {
   username: string;
   number: number;
   url: string;
-}
-
-export enum Status {
-  idle = 'idle',
-  loading = 'loading',
-}
-
-interface IIssuesRepo {
-  id: string;
-  title: string;
-  created_at: string;
-  user: { login: string; };
-  number: number;
-  html_url: string;
 }
 
 export interface IIssuesState {
@@ -50,7 +46,7 @@ export const loadAndSetIssues = createAsyncThunk(
   }
 );
 
-const mapIssuesListRepoToState = ({ id, title, created_at, user, number, html_url }: IIssuesRepo) => ({
+const mapIssuesListRepoToState = ({ id, title, created_at, user, number, html_url }: IIssueRepo) => ({
   id,
   title,
   createdAt: new Intl.DateTimeFormat().format(new Date(created_at)),
@@ -102,7 +98,7 @@ export const selectIssuesOrganizationName = (state: RootState) => state.issues.o
 export const selectIssuesRepositoryName = (state: RootState) => state.issues.repositoryName;
 export const isSearchApplied = (state: RootState) =>
   selectIssuesOrganizationName(state) && selectIssuesRepositoryName(state);
-export const isEmptyIssuesList = (state: RootState) =>
+export const isEmptyState = (state: RootState) =>
   isSearchApplied(state) && selectIssuesStatus(state) !== Status.loading && !selectIssuesList(state).length;
 
 export default issuesSlice.reducer;

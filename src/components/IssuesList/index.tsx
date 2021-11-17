@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks';
 import Pagination from '../Pagination';
 import { selectIssuesList, selectIssuesTotalCount } from '../../store/issuesSlice';
 import translations from './translations';
-import { ITEMS_COUNT_PER_PAGE } from './constants';
+import { ITEMS_COUNT_PER_PAGE } from '../../constants';
 import classes from './IssuesList.module.css';
 
 const IssuesList = () => {
@@ -22,7 +22,8 @@ const IssuesList = () => {
                   <Link href={url} underline="none" target="_blank">
                     {title}
                   </Link>}
-                secondary={`#${number} ${translations.openedOn} ${createdAt} ${translations.by} ${username}`} />
+                secondary={`#${number} ${translations.openedOn} ${createdAt} ${translations.by} ${username}`}
+              />
             </ListItem>
           </Paper>
         ))} 

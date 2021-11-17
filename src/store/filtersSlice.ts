@@ -1,14 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-
-export const DEFAULT_PAGE_NUMBER = 1;
-
-export enum SortBy {
-  newest = 'created-desc',
-  oldest = 'created-asc',
-  mostCommented = 'comments-desc',
-  leastCommented = 'comments-asc',
-}
+import { DEFAULT_PAGE_NUMBER, SortBy } from '../constants';
 
 export interface IFiltersState {
   organizationName: string;
@@ -43,7 +35,12 @@ export const filtersSlice = createSlice({
   },
 });
 
-export const { setFiltersOrganizationName, setFiltersRepositoryName, setFiltersSortBy, setFiltersPageNumber } = filtersSlice.actions;
+export const {
+  setFiltersOrganizationName,
+  setFiltersRepositoryName,
+  setFiltersSortBy,
+  setFiltersPageNumber,
+} = filtersSlice.actions;
 
 export const selectFiltersOrganizationName = (state: RootState) => state.filters.organizationName;
 export const selectFiltersRepositoryName = (state: RootState) => state.filters.repositoryName;

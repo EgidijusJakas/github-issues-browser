@@ -3,15 +3,21 @@ import { useAppSelector } from '../../hooks';
 import SearchControls from '../SearchControls';
 import IssuesList from '../IssuesList';
 import IssuesListHeader from '../IssuesListHeader';
-import { isEmptyIssuesList, isSearchApplied, selectIssuesList, selectIssuesStatus, Status } from '../../store/issuesSlice';
+import {
+  isEmptyState,
+  isSearchApplied,
+  selectIssuesList,
+  selectIssuesStatus,
+} from '../../store/issuesSlice';
 import classes from './App.module.css';
 import translations from './translations';
+import { Status } from '../../constants';
 
 const App = () => {
   const issuesList = useAppSelector(selectIssuesList);
   const status = useAppSelector(selectIssuesStatus);
   const searchIsApplied = useAppSelector(isSearchApplied);
-  const issuesListIsEmpty = useAppSelector(isEmptyIssuesList);
+  const isEmpty = useAppSelector(isEmptyState);
 
   return (
     <div className={classes.root}>
@@ -20,7 +26,7 @@ const App = () => {
       </Typography>
       <SearchControls />
       { searchIsApplied && <IssuesListHeader /> }
-      {issuesListIsEmpty &&
+      {isEmpty &&
         <Paper className={classes.emptyState}>
           <Typography variant="h5">
             {translations.emptyState}

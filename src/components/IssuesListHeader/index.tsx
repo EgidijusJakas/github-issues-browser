@@ -1,8 +1,22 @@
-import { Stack, Typography, Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { DEFAULT_PAGE_NUMBER, selectFiltersSortBy, setFiltersPageNumber, setFiltersSortBy, SortBy } from '../../store/filtersSlice';
+import {
+  Stack,
+  Typography,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material';
+import { selectFiltersSortBy, setFiltersPageNumber, setFiltersSortBy } from '../../store/filtersSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadAndSetIssues, selectIssuesOrganizationName, selectIssuesRepositoryName } from '../../store/issuesSlice';
+import {
+  loadAndSetIssues,
+  selectIssuesOrganizationName,
+  selectIssuesRepositoryName,
+} from '../../store/issuesSlice';
 import translations from './translations';
+import { DEFAULT_PAGE_NUMBER, SortBy } from '../../constants';
 
 const IssuesListHeader = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +45,7 @@ const IssuesListHeader = () => {
             value={sortBy}
             label={translations.sortBy}
             onChange={onSortChange}
-            id="sortby"
+            id="sort-by"
           >
             <MenuItem value={SortBy.newest}>{translations.newest}</MenuItem>
             <MenuItem value={SortBy.oldest}>{translations.oldest}</MenuItem>

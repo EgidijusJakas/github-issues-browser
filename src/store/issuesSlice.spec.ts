@@ -1,24 +1,26 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import issuesReducer, {
   IIssuesState,
-  Status,
   setIssuesOrganizationName,
   setIssuesRepositoryName,
   loadAndSetIssues,
+  initialState as initialIssuesState,
 } from './issuesSlice';
 
-import filtersReducer, { SortBy } from './filtersSlice';
+import { reducer, RootState } from '.'
+import { SortBy, Status } from '../constants';
+import { mockFetch } from '../testUtils';
 
-const initialFiltersState = {
+const filtersState = {
   filters: { 
-    organizationName: 'facebook',
-    repositoryName: 'react',
+    organizationName: 'orgName',
+    repositoryName: 'repoName',
     pageNumber: 5,
     sortBy: SortBy.leastCommented,
   },
 };
 
-const initialIssuesState: IIssuesState = {
+const issuesState: IIssuesState = {
   list: [{
     createdAt: '15/11/2021',
     id: 1111,
@@ -32,67 +34,64 @@ const initialIssuesState: IIssuesState = {
   organizationName: 'orgName',
   repositoryName: 'repoName',
 };
-
-const mockFetch = (response: unknown) => jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve(response),
-  })
-) as jest.Mock;
   
 describe('issues reducer', () => {
   it('should handle initial state', () => {
-    expect(issuesReducer(undefined, { type: 'unknown' })).toEqual({
-      list: [],
-      status: Status.idle,
-      totalCount: 0,
-      organizationName: '',
-      repositoryName: '',
-    });
+    expect(issuesReducer(undefined, { type: 'unknown' })).toEqual(initialIssuesState);
   });
 
   it('should handle setIssuesOrganizationName', () => {
-    const actual = issuesReducer(initialIssuesState, setIssuesOrganizationName('facebook'));
+    const actual = issuesReducer(issuesState, setIssuesOrganizationName('facebook'));
     expect(actual.organizationName).toEqual('facebook');
   });
 
   it('should handle setIssuesRepositoryName', () => {
-    const actual = issuesReducer(initialIssuesState, setIssuesRepositoryName('react'));
+    const actual = issuesReducer(issuesState, setIssuesRepositoryName('react'));
     expect(actual.repositoryName).toEqual('react');
   });
 
   describe('loadAndSetIssues', () => {
-    let store: EnhancedStore<any, any>
+    let store: EnhancedStore<RootState, any>
 
     beforeEach(() => {
       store = configureStore({
-        reducer: { issues: issuesReducer, filters: filtersReducer },
-        preloadedState: initialFiltersState,
+        reducer,
+        preloadedState: filtersState,
       });
     });
 
-    it('should fetch with correct params', async () => {
+    it('should fetch with correct params', () => {
       global.fetch = mockFetch({ items: null });
 
       store.dispatch(loadAndSetIssues());
 
       expect(fetch).toHaveBeenCalledTimes(1);
       expect(fetch).toHaveBeenCalledWith(
-        'https://api.github.com/search/issues?q=repo:facebook/react+type:issue+state:open+sort:comments-asc&page=5'
+        'https://api.github.com/search/issues?q=repo:orgName/repoName+type:issue+state:open+sort:comments-asc&page=5'
       );
     });
 
-    it('should handle pending state', async () => {
+    it('should handle pending state', () => {
       global.fetch = mockFetch({ items: null });
 
       store.dispatch(loadAndSetIssues());
 
       expect(store.getState().issues).toEqual({
-        list: [],
+        ...initialIssuesState,
         status: Status.loading,
-        totalCount: 0,
-        organizationName: '',
-        repositoryName: ''
       });
+    });
+
+    it('should handle rejected state', async () => {
+      global.fetch = jest.fn(() =>
+        Promise.reject({
+          json: () => Promise.reject({}),
+        })
+      ) as jest.Mock;
+
+      await store.dispatch(loadAndSetIssues());
+
+      expect(store.getState().issues).toEqual(initialIssuesState);
     });
 
     it('should handle fulfilled state when there are no results', async () => {
@@ -100,18 +99,12 @@ describe('issues reducer', () => {
 
       await store.dispatch(loadAndSetIssues());
 
-      expect(store.getState().issues).toEqual({
-        list: [],
-        status: Status.idle,
-        totalCount: 0,
-        organizationName: '',
-        repositoryName: ''
-      });
+      expect(store.getState().issues).toEqual(initialIssuesState);
     });
 
     it('should handle fulfilled state when there are results', async () => {
-      const id = 11111;
-      const number = 1;
+      const id = 123;
+      const number = 1771;
       const title = 'title';
       const url = 'url';
       const username = 'username';
@@ -131,6 +124,7 @@ describe('issues reducer', () => {
       await store.dispatch(loadAndSetIssues());
 
       expect(store.getState().issues).toEqual({
+        ...initialIssuesState,
         list: [{
           createdAt: '11/15/2021',
           id,
@@ -141,8 +135,6 @@ describe('issues reducer', () => {
         }],
         status: Status.idle,
         totalCount: 1,
-        organizationName: '',
-        repositoryName: ''
       });
     });
   });

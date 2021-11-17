@@ -3,8 +3,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { reducer } from '../../store';
 import IssuesListHeader from '.';
-import { Status, initialState as initialIssuesState } from '../../store/issuesSlice';
-import { DEFAULT_PAGE_NUMBER, initialState as initialFiltersState, SortBy } from '../../store/filtersSlice';
+import { initialState as initialIssuesState } from '../../store/issuesSlice';
+import { initialState as initialFiltersState } from '../../store/filtersSlice';
+import { DEFAULT_PAGE_NUMBER, SortBy, Status } from '../../constants';
 
 describe('IssuesListHeader', () => {
   it('should reset page number and start loading on sort change', async () => {

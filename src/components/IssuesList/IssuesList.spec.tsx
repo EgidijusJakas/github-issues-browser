@@ -5,7 +5,7 @@ import { reducer, RootState } from '../../store';
 import IssuesList from '.';
 import { initialState as initialIssuesState } from '../../store/issuesSlice';
 import { initialState as initialFiltersState } from '../../store/filtersSlice';
-import { ITEMS_COUNT_PER_PAGE } from './constants';
+import { ITEMS_COUNT_PER_PAGE } from '../../constants';
 
 const renderIssuesListWithState = (state: RootState) => render(
   <Provider store={configureStore({

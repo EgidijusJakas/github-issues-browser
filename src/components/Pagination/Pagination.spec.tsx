@@ -2,7 +2,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../../store';
 import Pagination from '.';
-import { Status } from '../../store/issuesSlice';
+import { Status } from '../../constants';
 
 describe('Pagination', () => {
   it('should set pageNumber and start loading on page click', () => {
