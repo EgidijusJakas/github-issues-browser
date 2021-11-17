@@ -31,6 +31,7 @@ const IssuesListHeader = () => {
             value={sortBy}
             label={translations.sortBy}
             onChange={onSortChange}
+            id="sortby"
           >
             <MenuItem value={SortBy.newest}>{translations.newest}</MenuItem>
             <MenuItem value={SortBy.oldest}>{translations.oldest}</MenuItem>

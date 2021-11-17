@@ -17,7 +17,7 @@ export interface IFiltersState {
   sortBy: SortBy;
 }
 
-const initialState: IFiltersState = {
+export const initialState: IFiltersState = {
   organizationName: '',
   repositoryName: '',
   pageNumber: DEFAULT_PAGE_NUMBER,

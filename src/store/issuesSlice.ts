@@ -33,7 +33,7 @@ export interface IIssuesState {
   repositoryName: string;
 }
 
-const initialState: IIssuesState = {
+export const initialState: IIssuesState = {
   list: [],
   status: Status.idle,
   totalCount: 0,
@@ -49,6 +49,15 @@ export const loadAndSetIssues = createAsyncThunk(
     return response.json();
   }
 );
+
+const mapIssuesListRepoToState = ({ id, title, created_at, user, number, html_url }: IIssuesRepo) => ({
+  id,
+  title,
+  createdAt: new Intl.DateTimeFormat().format(new Date(created_at)),
+  username: user.login,
+  number,
+  url: html_url,
+});
 
 export const issuesSlice = createSlice({
   name: 'issues',
@@ -68,6 +77,9 @@ export const issuesSlice = createSlice({
         state.totalCount = 0;
         state.status = Status.loading;
       })
+      .addCase(loadAndSetIssues.rejected, (state) => {
+        state.status = Status.idle;
+      })
       .addCase(loadAndSetIssues.fulfilled, (state, action) => {
         state.status = Status.idle;
 
@@ -75,14 +87,7 @@ export const issuesSlice = createSlice({
           return;
         }
 
-        state.list = action.payload.items.map(({ id, title, created_at, user, number, html_url }: IIssuesRepo) => ({
-          id,
-          title,
-          createdAt: new Intl.DateTimeFormat().format(new Date(created_at)),
-          username: user.login,
-          number,
-          url: html_url,
-        }));
+        state.list = action.payload.items.map(mapIssuesListRepoToState);
         state.totalCount = action.payload.total_count;
       });
   },

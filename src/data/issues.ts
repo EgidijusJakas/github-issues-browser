@@ -1,4 +1,4 @@
-import { IFiltersState } from "../store/filtersSlice";
+import { IFiltersState } from '../store/filtersSlice';
 
 const BASE_URL = 'https://api.github.com/search/issues';
 

@@ -2,11 +2,13 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import filtersReducer from './filtersSlice';
 import issuesReducer from './issuesSlice';
 
+export const reducer = {
+  filters: filtersReducer,
+  issues: issuesReducer,
+}
+
 export const store = configureStore({
-  reducer: {
-    filters: filtersReducer,
-    issues: issuesReducer,
-  },
+  reducer
 });
 
 export type AppDispatch = typeof store.dispatch;

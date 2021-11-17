@@ -38,6 +38,7 @@ const SearchControls = () => {
         variant="outlined"
         value={organizationName}
         onChange={onOrganizationNameChange}
+        id="organization"
       />
       <TextField
         size="small"
@@ -45,6 +46,7 @@ const SearchControls = () => {
         variant="outlined"
         value={repositoryName}
         onChange={onRepositoryNameChange}
+        id="repository"
       />
       <Tooltip arrow title={isSubmitDisabled ? translations.disabledInfo : '' }>
         <span>

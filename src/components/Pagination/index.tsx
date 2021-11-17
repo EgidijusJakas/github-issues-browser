@@ -20,6 +20,7 @@ const Pagination = ({ pageCount }: IPagination) => {
 
   return (
     <PaginationMUI
+      id="pagination"
       count={pageCount}
       page={pageNumber}
       onChange={onPaginationChange}
