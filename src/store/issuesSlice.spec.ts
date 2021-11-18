@@ -121,12 +121,17 @@ describe('issues reducer', () => {
         total_count: 1,
       });
 
+      // @ts-ignore
+      global.Intl.DateTimeFormat = jest.fn(() => ({
+          format: () => 'formatted date',
+      }))
+
       await store.dispatch(loadAndSetIssues());
 
       expect(store.getState().issues).toEqual({
         ...initialIssuesState,
         list: [{
-          createdAt: '11/15/2021',
+          createdAt: 'formatted date',
           id,
           number,
           title,
